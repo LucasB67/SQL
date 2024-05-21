@@ -34,8 +34,8 @@ SELECT nom_bataille, DATE_FORMAT(date_bataille, "%d/ %m/-%y"), nom_lieu
 --Q6:
 SELECT nom_potion, SUM(cout_ingredient*qte) AS cout_potion
 	FROM potion
-	JOIN composer USING (id_potion)
-	JOIN ingredient USING(id_ingredient)
+	INNER JOIN composer USING (id_potion)
+	INNER JOIN ingredient USING(id_ingredient)
 	GROUP BY id_potion
 	ORDER BY cout_potion DESC;
 
