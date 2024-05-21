@@ -5,8 +5,9 @@ SELECT *
 	LIKE "%um";
 
 --Q2:
-SELECT id_lieu, COUNT(id_personnage)
-	FROM personnage 
+SELECT nom_lieu, COUNT(id_personnage) AS nombre_habitants
+	FROM personnage
+	JOIN lieu USING(id_lieu)
 	GROUP BY id_lieu 
 	ORDER BY COUNT(id_personnage) DESC;
 
