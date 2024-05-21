@@ -19,7 +19,7 @@ SELECT nom_personnage, nom_specialite, adresse_personnage, nom_lieu
 	ORDER BY id_lieu, nom_personnage;
 
 --Q4:
-SELECT nom_specialite, COUNT(id_personnage)
+SELECT nom_specialite, COUNT(id_personnage) AS nombre
 	FROM personnage
 	JOIN specialite USING (id_specialite)
 	GROUP BY id_specialite
