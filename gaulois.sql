@@ -12,8 +12,10 @@ SELECT nom_lieu, COUNT(id_personnage) AS nombre_habitants
 	ORDER BY COUNT(id_personnage) DESC;
 
 --Q3:
-SELECT nom_personnage, id_specialite, adresse_personnage, id_lieu
+SELECT nom_personnage, nom_specialite, adresse_personnage, nom_lieu
 	FROM personnage
+	JOIN specialite USING(id_specialite)
+	JOIN lieu USING(id_lieu)
 	ORDER BY id_lieu, nom_personnage;
 
 --Q4:
