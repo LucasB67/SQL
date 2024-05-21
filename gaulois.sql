@@ -54,7 +54,15 @@ SELECT nom_personnage, SUM(qte) AS qte_totale
 	JOIN bataille USING(id_bataille)
 	WHERE nom_bataille LIKE "Bataille du village gaulois"
 	GROUP BY id_personnage
-	ORDER BY qte_totale DESC;
+	HAVING qte_totale >= ALL
+	(
+		SELECT qte 
+			FROM prendre_casque
+			JOIN personnage USING (id_personnage)
+			JOIN bataille USING(id_bataille)
+			WHERE nom_bataille LIKE "Bataille du village gaulois"
+			GROUP BY id_personnage
+	);
 
 --Q9:
 SELECT nom_personnage, SUM(dose_boire) AS qte_totale
@@ -68,8 +76,13 @@ SELECT nom_bataille, SUM(qte) AS qte_totale
 	FROM prendre_casque
 	JOIN bataille USING (id_bataille)
 	GROUP BY id_bataille
-	ORDER BY qte_totale DESC
-	LIMIT 1;
+	HAVING qte_totale >= ALL
+	(
+		SELECT SUM(qte)
+			FROM prendre_casque
+			JOIN bataille USING (id_bataille)
+			GROUP BY id_bataille
+	);
 
 --Q11:
 SELECT nom_type_casque, SUM(id_type_casque) AS nombre, SUM(cout_casque) AS cout_total
@@ -91,12 +104,24 @@ SELECT nom_lieu, COUNT(id_personnage) AS population
 	JOIN personnage USING (id_lieu)
 	WHERE nom_lieu NOT LIKE "Village gaulois"
 	GROUP BY id_lieu
-	ORDER BY population DESC;
+	HAVING population >= ALL
+	(
+		SELECT COUNT(id_personnage)
+			FROM lieu
+			JOIN personnage USING (id_lieu)
+			WHERE nom_lieu NOT LIKE "Village gaulois"
+			GROUP BY id_lieu
+	);
 
 --Q14:
 SELECT DISTINCT nom_personnage
-	FROM boire
-	JOIN personnage USING (id_personnage);
+	FROM personnage
+	HAVING nom_personnage <> ALL
+	(
+		SELECT DISTINCT nom_personnage
+			FROM boire
+			JOIN personnage USING (id_personnage)
+	);
 
 --Q15:
 SELECT nom_personnage
